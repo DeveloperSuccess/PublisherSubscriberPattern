@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using PublisherSubscriberPattern.Models;
+﻿using PublisherSubscriberPattern.Models;
 using System.Collections.Concurrent;
 
 namespace PublisherSubscriberPattern
@@ -28,24 +27,24 @@ namespace PublisherSubscriberPattern
                 return new WaitForValueResponse(value: value);
             }
 
-            var (subscriberKey, completion) = Subscribe(key);
+            var (subscriberKey, task) = Subscribe(key);
 
-            await Task.WhenAny(completion.Task, Task.Delay(millisecondsWait));
+            await Task.WhenAny(task, Task.Delay(millisecondsWait));
 
             Unsubscribe(subscriberKey);
 
-            if (!completion.Task.IsCompleted)
-                return new WaitForValueResponse(success: false);            
+            if (!task.IsCompleted)
+                return new WaitForValueResponse(success: false);
 
-            return new WaitForValueResponse(value: completion.Task.Result);            
+            return new WaitForValueResponse(value: task.Result);
         }
 
-        private (string subscriberKey, TaskCompletionSource<string>) Subscribe(string key)
+        private (string subscriberKey, Task<string>) Subscribe(string key)
         {
             var subscriberKey = Guid.NewGuid().ToString();
 
-            var completion = new TaskCompletionSource<string>();   
-            
+            var completion = new TaskCompletionSource<string>();
+
             var subscriber = new SubscriberModel()
             {
                 Key = key,
@@ -54,11 +53,11 @@ namespace PublisherSubscriberPattern
 
             var completions = _subscribers.GetOrAdd(subscriberKey, _ => subscriber);
 
-            return (subscriberKey, completion);
+            return (subscriberKey, completion.Task);
         }
 
         private void Unsubscribe(string key)
-        {            
+        {
             _subscribers.TryRemove(key, out var subscriber);
         }
     }
