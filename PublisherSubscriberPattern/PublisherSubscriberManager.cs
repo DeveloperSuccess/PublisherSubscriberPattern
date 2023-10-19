@@ -1,55 +1,65 @@
-﻿using System.Collections.Concurrent;
+﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using PublisherSubscriberPattern.Models;
+using System.Collections.Concurrent;
 
 namespace PublisherSubscriberPattern
 {
     public class PublisherSubscriberManager : IPublisherSubscriberManager
     {
-        private ConcurrentDictionary<string, string> values = new ConcurrentDictionary<string, string>();
-        private ConcurrentDictionary<string, ConcurrentBag<TaskCompletionSource<string>>> subscribers = new ConcurrentDictionary<string, ConcurrentBag<TaskCompletionSource<string>>>();
+        private ConcurrentDictionary<string, string> _values = new ConcurrentDictionary<string, string>();
+        private ConcurrentDictionary<string, SubscriberModel> _subscribers = new ConcurrentDictionary<string, SubscriberModel>();
 
         public void AddValue(string key, string value)
         {
-            values[key] = value;
+            _values[key] = value;
 
-            if (subscribers.TryGetValue(key, out var completions))
+            var completions = _subscribers.Values.Where(x => x.Key == key);
+
+            foreach (var completion in completions)
             {
-                foreach (var completion in completions)
-                {
-                    completion.TrySetResult(value);
-                }
+                completion.Value.TrySetResult(value);
             }
         }
 
         public async Task<WaitForValueResponse> WaitForValueAsync(string key, int millisecondsWait)
         {
-            if (values.TryGetValue(key, out var value))
+            if (_values.TryGetValue(key, out var value))
             {
                 return new WaitForValueResponse(value: value);
             }
 
-            var completion = Subscribe(key);
+            var (subscriberKey, completion) = Subscribe(key);
 
             await Task.WhenAny(completion.Task, Task.Delay(millisecondsWait));
 
-            if (completion.Task.IsCompleted)
-                return new WaitForValueResponse(value: completion.Task.Result);
+            Unsubscribe(subscriberKey);
 
-            return new WaitForValueResponse(success: false);
+            if (!completion.Task.IsCompleted)
+                return new WaitForValueResponse(success: false);            
+
+            return new WaitForValueResponse(value: completion.Task.Result);            
         }
 
-        private TaskCompletionSource<string> Subscribe(string key)
+        private (string subscriberKey, TaskCompletionSource<string>) Subscribe(string key)
         {
-            var completion = new TaskCompletionSource<string>();
+            var subscriberKey = Guid.NewGuid().ToString();
 
-            var completions = subscribers.GetOrAdd(key, _ => new ConcurrentBag<TaskCompletionSource<string>>());
-            completions.Add(completion);
+            var completion = new TaskCompletionSource<string>();   
+            
+            var subscriber = new SubscriberModel()
+            {
+                Key = key,
+                Value = completion
+            };
 
-            return completion;
+            var completions = _subscribers.GetOrAdd(subscriberKey, _ => subscriber);
+
+            return (subscriberKey, completion);
         }
 
-        private void Unsubscribe(string key, TaskCompletionSource<string> completion)
-        {
-            //???????????????
+        private void Unsubscribe(string key)
+        {            
+            _subscribers.TryRemove(key, out var subscriber);
         }
     }
 }
