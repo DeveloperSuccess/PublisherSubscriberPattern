@@ -2,7 +2,7 @@
 {
     public class SubscriberModel
     {
-        public string Key { get; set; }
-        public TaskCompletionSource<string> Value { get; set; }
+        public required string Key { get; set; }
+        public required TaskCompletionSource<string> Value { get; set; }
     }
 }

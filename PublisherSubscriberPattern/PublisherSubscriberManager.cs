@@ -10,7 +10,7 @@ namespace PublisherSubscriberPattern
 
         public void AddValue(string key, string value)
         {
-            _values[key] = value;
+            _values.AddOrUpdate(key, value);
 
             var completions = _subscribers.Values.Where(x => x.Key == key);
 
@@ -20,40 +20,53 @@ namespace PublisherSubscriberPattern
             }
         }
 
-        public async Task<WaitForValueResponse> WaitForValueAsync(string key, int millisecondsWait)
+        public async Task<WaitForValueResponse> WaitForValueAsync(string key, int millisecondsWait, CancellationToken cancellationToken)
         {
             if (_values.TryGetValue(key, out var value))
             {
                 return new WaitForValueResponse(value: value);
             }
 
-            var (subscriberKey, task) = Subscribe(key);
+            Subscribe(key, out string subscriberKey, out Task<string> task);
 
-            await Task.WhenAny(task, Task.Delay(millisecondsWait));
+            var completionSource = new TaskCompletionSource<bool>();
 
-            Unsubscribe(subscriberKey);
+            await using (cancellationToken.Register(() => completionSource.TrySetCanceled()))
+            {
+                var completedTask = await Task.WhenAny(task, completionSource.Task, Task.Delay(millisecondsWait, cancellationToken));
 
-            if (!task.IsCompleted)
-                return new WaitForValueResponse(success: false);
+                Unsubscribe(subscriberKey);
 
-            return new WaitForValueResponse(value: task.Result);
+                if (completedTask == task)
+                {
+                    return new WaitForValueResponse(value: task.Result);
+                }
+                else if (completedTask == completionSource.Task)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
+                else
+                {
+                    return new WaitForValueResponse(success: false);
+                }
+            }
+
+            throw new InvalidOperationException("Код перешел в недопустимое состояние.");
         }
 
-        private (string subscriberKey, Task<string>) Subscribe(string key)
+        private void Subscribe(string key, out string subscriberKey, out Task<string> task)
         {
-            var subscriberKey = Guid.NewGuid().ToString();
-
-            var completion = new TaskCompletionSource<string>();
+            subscriberKey = Guid.NewGuid().ToString();
 
             var subscriber = new SubscriberModel()
             {
                 Key = key,
-                Value = completion
+                Value = new TaskCompletionSource<string>()
             };
 
-            var completions = _subscribers.GetOrAdd(subscriberKey, _ => subscriber);
+            _subscribers.AddOrUpdate(subscriberKey, subscriber);
 
-            return (subscriberKey, completion.Task);
+            task = subscriber.Value.Task;
         }
 
         private void Unsubscribe(string key)

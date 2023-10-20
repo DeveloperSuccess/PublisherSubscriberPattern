@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using PublisherSubscriberPattern.Models;
 using System.Net.Mime;
 
 namespace PublisherSubscriberPattern.Controllers
@@ -22,9 +23,9 @@ namespace PublisherSubscriberPattern.Controllers
         [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public void AddValue(string key, string value)
+        public void AddValue([FromQuery] AddValueModel request)
         {
-            _publisherSubscriberManager.AddValue(key, value);
+            _publisherSubscriberManager.AddValue(request.Key, request.Value);
         }
 
         /// <summary>
@@ -36,9 +37,9 @@ namespace PublisherSubscriberPattern.Controllers
         [HttpGet]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WaitForValueResponse))]
-        public async Task<IActionResult> WaitForValueAsync(string key, int millisecondsWait)
+        public async Task<IActionResult> WaitForValueAsync([FromQuery] WaitForValueAsyncModel request, CancellationToken cancellationToken)
         {
-            var result = await _publisherSubscriberManager.WaitForValueAsync(key, millisecondsWait);
+            var result = await _publisherSubscriberManager.WaitForValueAsync(request.Key, request.MillisecondsWait, cancellationToken);
 
             return new JsonResult(result);
         }
