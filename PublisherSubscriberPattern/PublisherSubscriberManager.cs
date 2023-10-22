@@ -12,7 +12,7 @@ namespace PublisherSubscriberPattern
         {
             _values.AddOrUpdate(key, value);
 
-            SendToSubscribers(value);
+            SendToSubscribers(key, value);
         }
 
         public async Task<WaitForValueResponse> WaitForValueAsync(string key, int millisecondsWait, CancellationToken cancellationToken)
@@ -69,11 +69,12 @@ namespace PublisherSubscriberPattern
             _subscribers.TryRemove(key, out var subscriber);
         }
 
-        private void SendToSubscribers(string value)
+        private void SendToSubscribers(string key, string value)
         {
             foreach (var completion in _subscribers)
             {
-                completion.Value.Value.TrySetResult(value);
+                if (completion.Value.Key == key)
+                    completion.Value.Value.TrySetResult(value);
             }
         }
     }
