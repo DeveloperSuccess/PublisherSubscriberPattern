@@ -17,12 +17,13 @@ namespace PublisherSubscriberPattern
 
         public async Task<WaitForValueResponse> WaitForValueAsync(string key, int millisecondsWait, CancellationToken cancellationToken)
         {
+            Subscribe(key, out string subscriberKey, out Task<string> task);
+
             if (_values.TryGetValue(key, out var value))
             {
+                Unsubscribe(subscriberKey);
                 return new WaitForValueResponse(value: value);
-            }
-
-            Subscribe(key, out string subscriberKey, out Task<string> task);
+            }            
 
             var completionSource = new TaskCompletionSource<bool>();
 
