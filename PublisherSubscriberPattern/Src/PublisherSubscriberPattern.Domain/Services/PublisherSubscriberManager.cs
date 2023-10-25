@@ -6,12 +6,32 @@ namespace PublisherSubscriberPattern.Domain.Services
 {
     public class PublisherSubscriberManager : IPublisherSubscriberManager
     {
-        private ConcurrentDictionary<string, string> _values = new ConcurrentDictionary<string, string>();
+        private readonly int _millisecondsAverageExpirationTime = 300000;
+
+        private ConcurrentDictionary<string, StorageValue> _storageValues = new ConcurrentDictionary<string, StorageValue>();
         private ConcurrentDictionary<string, Subscriber> _subscribers = new ConcurrentDictionary<string, Subscriber>();
+
+        public PublisherSubscriberManager(int millisecondsAverageExpirationTime = 300000)
+        {
+            _millisecondsAverageExpirationTime = millisecondsAverageExpirationTime;
+
+            new Timer(DeletingExpiredValues, null, 0, _millisecondsAverageExpirationTime);
+        }
+
+        private void DeletingExpiredValues(object? state)
+        {
+            var currentDateTime = DateTime.UtcNow;
+
+            foreach (var storageValue in _storageValues)
+            {
+                if (storageValue.Value.ExpirationTime < currentDateTime)
+                    _storageValues.TryRemove(storageValue.Key, out var value);
+            }
+        }
 
         public void AddValue(string key, string value)
         {
-            _values.AddOrUpdate(key, value);
+            _storageValues.AddOrUpdate(key, new StorageValue(value, DateTime.UtcNow.AddMicroseconds(_millisecondsAverageExpirationTime)));
 
             SendToSubscribers(key, value);
         }
@@ -20,11 +40,11 @@ namespace PublisherSubscriberPattern.Domain.Services
         {
             Subscribe(key, out string subscriberKey, out Task<string> task);
 
-            if (_values.TryGetValue(key, out var value))
+            if (_storageValues.TryGetValue(key, out var storageValue))
             {
                 Unsubscribe(subscriberKey);
-                return new WaitForValueResponse(value: value);
-            }            
+                return new WaitForValueResponse(value: storageValue.Value);
+            }
 
             var completionSource = new TaskCompletionSource<bool>();
 
