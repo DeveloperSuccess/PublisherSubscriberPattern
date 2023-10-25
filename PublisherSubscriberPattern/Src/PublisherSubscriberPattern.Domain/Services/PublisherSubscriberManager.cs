@@ -18,17 +18,6 @@ namespace PublisherSubscriberPattern.Domain.Services
             new Timer(DeletingExpiredValues, null, 0, _millisecondsAverageExpirationTime);
         }
 
-        private void DeletingExpiredValues(object? state)
-        {
-            var currentDateTime = DateTime.UtcNow;
-
-            foreach (var storageValue in _storageValues)
-            {
-                if (storageValue.Value.ExpirationTime < currentDateTime)
-                    _storageValues.TryRemove(storageValue.Key, out var value);
-            }
-        }
-
         public void AddValue(string key, string value)
         {
             _storageValues.AddOrUpdate(key, new StorageValue(value, DateTime.UtcNow.AddMicroseconds(_millisecondsAverageExpirationTime)));
@@ -97,6 +86,17 @@ namespace PublisherSubscriberPattern.Domain.Services
             {
                 if (completion.Value.Key == key)
                     completion.Value.Value.TrySetResult(value);
+            }
+        }
+
+        private void DeletingExpiredValues(object? state)
+        {
+            var currentDateTime = DateTime.UtcNow;
+
+            foreach (var storageValue in _storageValues)
+            {
+                if (storageValue.Value.ExpirationTime < currentDateTime)
+                    _storageValues.TryRemove(storageValue.Key, out var value);
             }
         }
     }
