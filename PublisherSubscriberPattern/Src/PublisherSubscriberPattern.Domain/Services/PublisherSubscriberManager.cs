@@ -1,12 +1,13 @@
-﻿using PublisherSubscriberPattern.Models;
+﻿using PublisherSubscriberPattern.Domain.Interfaces;
+using PublisherSubscriberPattern.Domain.ValueObjects;
 using System.Collections.Concurrent;
 
-namespace PublisherSubscriberPattern
+namespace PublisherSubscriberPattern.Domain.Services
 {
     public class PublisherSubscriberManager : IPublisherSubscriberManager
     {
         private ConcurrentDictionary<string, string> _values = new ConcurrentDictionary<string, string>();
-        private ConcurrentDictionary<string, SubscriberModel> _subscribers = new ConcurrentDictionary<string, SubscriberModel>();
+        private ConcurrentDictionary<string, Subscriber> _subscribers = new ConcurrentDictionary<string, Subscriber>();
 
         public void AddValue(string key, string value)
         {
@@ -54,7 +55,7 @@ namespace PublisherSubscriberPattern
         {
             subscriberKey = Guid.NewGuid().ToString();
 
-            var subscriber = new SubscriberModel()
+            var subscriber = new Subscriber()
             {
                 Key = key,
                 Value = new TaskCompletionSource<string>()

@@ -1,4 +1,4 @@
-﻿namespace PublisherSubscriberPattern.Models
+﻿namespace PublisherSubscriberPattern.Api.Models
 {
     /// <summary>
     /// Модель подписки на получение значения

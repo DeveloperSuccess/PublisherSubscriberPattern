@@ -1,4 +1,5 @@
-using PublisherSubscriberPattern;
+using PublisherSubscriberPattern.Domain.Interfaces;
+using PublisherSubscriberPattern.Domain.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

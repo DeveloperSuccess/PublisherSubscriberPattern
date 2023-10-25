@@ -1,4 +1,6 @@
-﻿namespace PublisherSubscriberPattern
+﻿using PublisherSubscriberPattern.Domain.ValueObjects;
+
+namespace PublisherSubscriberPattern.Domain.Interfaces
 {
     public interface IPublisherSubscriberManager
     {
