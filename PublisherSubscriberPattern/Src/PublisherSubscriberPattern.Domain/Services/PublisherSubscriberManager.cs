@@ -15,7 +15,7 @@ namespace PublisherSubscriberPattern.Domain.Services
         {
             _millisecondsAverageExpirationTime = millisecondsAverageExpirationTime;
 
-            new Timer(DeletingExpiredValues, null, 0, _millisecondsAverageExpirationTime);
+            new Timer(RemoveExpiredValues, null, 0, _millisecondsAverageExpirationTime);
         }
 
         public void AddValue(string key, string value)
@@ -89,7 +89,7 @@ namespace PublisherSubscriberPattern.Domain.Services
             }
         }
 
-        private void DeletingExpiredValues(object? state)
+        private void RemoveExpiredValues(object? state)
         {
             var currentDateTime = DateTime.UtcNow;
 
