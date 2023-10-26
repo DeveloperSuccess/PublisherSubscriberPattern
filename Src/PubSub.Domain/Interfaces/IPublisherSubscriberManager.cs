@@ -1,6 +1,6 @@
-﻿using PublisherSubscriberPattern.Domain.ValueObjects;
+﻿using PubSub.Domain.ValueObjects;
 
-namespace PublisherSubscriberPattern.Domain.Interfaces
+namespace PubSub.Domain.Interfaces
 {
     public interface IPublisherSubscriberManager
     {

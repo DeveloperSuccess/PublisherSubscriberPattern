@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using PublisherSubscriberPattern.Api.Models;
-using PublisherSubscriberPattern.Domain.Interfaces;
-using PublisherSubscriberPattern.Domain.ValueObjects;
+using PubSub.Api.Models;
+using PubSub.Domain.Interfaces;
+using PubSub.Domain.ValueObjects;
 using System.Net.Mime;
 
-namespace PublisherSubscriberPattern.Api.Controllers
+namespace PubSub.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]

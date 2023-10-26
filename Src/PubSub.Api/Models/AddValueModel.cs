@@ -1,4 +1,4 @@
-﻿namespace PublisherSubscriberPattern.Api.Models
+﻿namespace PubSub.Api.Models
 {
     /// <summary>
     /// Модель добавления значения для отправки подписчикам

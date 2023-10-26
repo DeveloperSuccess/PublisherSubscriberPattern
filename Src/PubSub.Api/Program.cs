@@ -1,5 +1,5 @@
-using PublisherSubscriberPattern.Domain.Interfaces;
-using PublisherSubscriberPattern.Domain.Services;
+using PubSub.Domain.Interfaces;
+using PubSub.Domain.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

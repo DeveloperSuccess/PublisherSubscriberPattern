@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace PublisherSubscriberPattern.Domain
+namespace PubSub.Domain
 {
     public static class ExtensionMethods
     {

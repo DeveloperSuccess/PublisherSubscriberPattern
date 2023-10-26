@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PublisherSubscriberPattern.Domain\PublisherSubscriberPattern.Domain.csproj" />
+    <ProjectReference Include="..\PubSub.Domain\PubSub.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
-﻿using PublisherSubscriberPattern.Domain.Interfaces;
-using PublisherSubscriberPattern.Domain.ValueObjects;
+﻿using PubSub.Domain.Interfaces;
+using PubSub.Domain.ValueObjects;
 using System.Collections.Concurrent;
 
-namespace PublisherSubscriberPattern.Domain.Services
+namespace PubSub.Domain.Services
 {
     public class PublisherSubscriberManager : IPublisherSubscriberManager
     {

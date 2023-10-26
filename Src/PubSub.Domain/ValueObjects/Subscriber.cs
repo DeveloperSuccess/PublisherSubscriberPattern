@@ -1,4 +1,4 @@
-﻿namespace PublisherSubscriberPattern.Domain.ValueObjects
+﻿namespace PubSub.Domain.ValueObjects
 
 {
     internal class Subscriber
