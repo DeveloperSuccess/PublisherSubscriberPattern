@@ -53,7 +53,7 @@ namespace PublisherSubscriberPattern.Domain.Services
                 }
                 else
                 {
-                    return new WaitForValueResponse(success: false);
+                    return new WaitForValueResponse(success: false, errorMessage: "Время ожидания истекло.");
                 }
             }
 
