@@ -9,12 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublisherSubscriberPattern.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{F2881ED9-2C6D-4DFD-9BA3-9A7AA2AE3975}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{81EF09CE-A007-4C1D-A68F-0FFF80CE86BE}"
-	ProjectSection(SolutionItems) = preProject
-		..\CleanArchitecture.pdf = ..\CleanArchitecture.pdf
-		README.md = README.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
