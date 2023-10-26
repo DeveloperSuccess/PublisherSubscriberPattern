@@ -3,16 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublisherSubscriberPattern.Domain", "PublisherSubscriberPattern\Src\PublisherSubscriberPattern.Domain\PublisherSubscriberPattern.Domain.csproj", "{16D5A3AF-9B8D-4577-B8A4-19D9452753A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublisherSubscriberPattern.Domain", "Src\PublisherSubscriberPattern.Domain\PublisherSubscriberPattern.Domain.csproj", "{16D5A3AF-9B8D-4577-B8A4-19D9452753A2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublisherSubscriberPattern.Api", "PublisherSubscriberPattern\Src\PublisherSubscriberPattern.Api\PublisherSubscriberPattern.Api.csproj", "{201A8839-1AD0-4608-AA8F-42F44D7910A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublisherSubscriberPattern.Api", "Src\PublisherSubscriberPattern.Api\PublisherSubscriberPattern.Api.csproj", "{201A8839-1AD0-4608-AA8F-42F44D7910A8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{F2881ED9-2C6D-4DFD-9BA3-9A7AA2AE3975}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{45D6536E-682B-40AB-AF8D-566A392F9B09}"
 	ProjectSection(SolutionItems) = preProject
-		PublisherSubscriberPattern\Docs\CleanArchitecture.pdf = PublisherSubscriberPattern\Docs\CleanArchitecture.pdf
-		PublisherSubscriberPattern\Docs\README.md = PublisherSubscriberPattern\Docs\README.md
+		Docs\CleanArchitecture.pdf = Docs\CleanArchitecture.pdf
+		Docs\README.md = Docs\README.md
 	EndProjectSection
 EndProject
 Global
