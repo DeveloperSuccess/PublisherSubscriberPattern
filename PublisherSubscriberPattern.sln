@@ -9,6 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublisherSubscriberPattern.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{F2881ED9-2C6D-4DFD-9BA3-9A7AA2AE3975}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{45D6536E-682B-40AB-AF8D-566A392F9B09}"
+	ProjectSection(SolutionItems) = preProject
+		PublisherSubscriberPattern\Docs\CleanArchitecture.pdf = PublisherSubscriberPattern\Docs\CleanArchitecture.pdf
+		PublisherSubscriberPattern\Docs\README.md = PublisherSubscriberPattern\Docs\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
