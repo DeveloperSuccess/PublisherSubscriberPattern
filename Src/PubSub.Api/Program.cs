@@ -1,3 +1,4 @@
+using PubSub.Application;
 using PubSub.Domain.Interfaces;
 using PubSub.Domain.Services;
 
@@ -11,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IPublisherSubscriberManager, PublisherSubscriberManager>();
+
+builder.Services.AddApplication();
 
 var app = builder.Build();
 

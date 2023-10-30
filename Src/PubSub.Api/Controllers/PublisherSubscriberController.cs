@@ -1,6 +1,9 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PubSub.Api.Models;
+using PubSub.Application.PublisherSubscriber.Commands.AddValue;
 using PubSub.Domain.Interfaces;
+using PubSub.Domain.Services;
 using PubSub.Domain.ValueObjects;
 using System.Net.Mime;
 
@@ -10,11 +13,11 @@ namespace PubSub.Api.Controllers
     [Route("api/[controller]/[action]")]
     public class PublisherSubscriberController : ControllerBase
     {
-        IPublisherSubscriberManager _publisherSubscriberManager;
+        private readonly IMediator _mediator;
 
-        public PublisherSubscriberController(IPublisherSubscriberManager publisherSubscriberManager)
+        public PublisherSubscriberController(IMediator mediator)
         {
-            _publisherSubscriberManager = publisherSubscriberManager;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         /// <summary>
@@ -25,9 +28,9 @@ namespace PubSub.Api.Controllers
         [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public void AddValue([FromQuery] AddValueModel request)
+        public Task AddValueAsync([FromQuery] AddValueModel request, CancellationToken cancellationToken)
         {
-            _publisherSubscriberManager.AddValue(request.Key, request.Value);
+            return _mediator.Send(new AddValueCommand(request.Key, request.Value), cancellationToken);
         }
 
         /// <summary>
@@ -41,9 +44,9 @@ namespace PubSub.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WaitForValueResponse))]
         public async Task<IActionResult> WaitForValueAsync([FromQuery] WaitForValueAsyncModel request, CancellationToken cancellationToken)
         {
-            var result = await _publisherSubscriberManager.WaitForValueAsync(request.Key, request.MillisecondsWait, cancellationToken);
+            // var result = await _publisherSubscriberManager.WaitForValueAsync(request.Key, request.MillisecondsWait, cancellationToken);
 
-            return new JsonResult(result);
+             return new JsonResult(null);
         }
     }
 }

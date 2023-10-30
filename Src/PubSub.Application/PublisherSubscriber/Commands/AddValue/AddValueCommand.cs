@@ -2,5 +2,5 @@
 
 namespace PubSub.Application.PublisherSubscriber.Commands.AddValue
 {
-    public  record class AddValueCommand() : IRequest;    
+    public record class AddValueCommand(string Key, string Value) : IRequest;    
 }
