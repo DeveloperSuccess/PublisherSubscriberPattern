@@ -32,7 +32,7 @@ namespace PubSub.Domain.Services
             if (_storageValues.TryGetValue(key, out var storageValue))
             {
                 Unsubscribe(subscriberKey);
-                return new WaitForValueResponse(value: storageValue.Value);
+                return new WaitForValueResponse(Value: storageValue.Value);
             }
 
             var completionSource = new TaskCompletionSource<bool>();
@@ -45,7 +45,7 @@ namespace PubSub.Domain.Services
 
                 if (completedTask == task)
                 {
-                    return new WaitForValueResponse(value: task.Result);
+                    return new WaitForValueResponse(Value: task.Result);
                 }
                 else if (completedTask == completionSource.Task)
                 {
@@ -53,7 +53,7 @@ namespace PubSub.Domain.Services
                 }
                 else
                 {
-                    return new WaitForValueResponse(success: false, errorMessage: "Время ожидания истекло.");
+                    return new WaitForValueResponse(Success: false, ErrorMessage: "Время ожидания истекло.");
                 }
             }
 

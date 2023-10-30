@@ -2,8 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PubSub.Api.Models;
 using PubSub.Application.PublisherSubscriber.Commands.AddValue;
-using PubSub.Domain.Interfaces;
-using PubSub.Domain.Services;
+using PubSub.Application.PublisherSubscriber.Queries.WaitForValueAsync;
 using PubSub.Domain.ValueObjects;
 using System.Net.Mime;
 
@@ -44,9 +43,9 @@ namespace PubSub.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WaitForValueResponse))]
         public async Task<IActionResult> WaitForValueAsync([FromQuery] WaitForValueAsyncModel request, CancellationToken cancellationToken)
         {
-            // var result = await _publisherSubscriberManager.WaitForValueAsync(request.Key, request.MillisecondsWait, cancellationToken);
+            var response = await _mediator.Send(new WaitForValueAsyncQuery(request.Key, request.MillisecondsWait), cancellationToken);
 
-             return new JsonResult(null);
+            return new JsonResult(response);
         }
     }
 }
