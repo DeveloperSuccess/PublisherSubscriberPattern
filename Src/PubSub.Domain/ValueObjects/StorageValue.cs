@@ -1,4 +1,4 @@
 ﻿namespace PubSub.Domain.ValueObjects
 {
-    internal record class StorageValue(string Value, DateTime ExpirationTime);
+    internal record StorageValue(string Value, DateTime ExpirationTime);
 }

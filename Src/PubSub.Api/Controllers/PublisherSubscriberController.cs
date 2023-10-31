@@ -22,8 +22,6 @@ namespace PubSub.Api.Controllers
         /// <summary>
         /// Добавить значение для отправки подписчикам
         /// </summary>
-        /// <param name="key">Уникальный ключ</param>
-        /// <param name="value">Значение</param>
         [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,8 +33,6 @@ namespace PubSub.Api.Controllers
         /// <summary>
         /// Подписаться на получение значения
         /// </summary>
-        /// <param name="key">Уникальный ключ</param>
-        /// <param name="millisecondsWait">Время ожидания в ms</param>
         /// <returns></returns>
         [HttpGet]
         [Produces(MediaTypeNames.Application.Json)]

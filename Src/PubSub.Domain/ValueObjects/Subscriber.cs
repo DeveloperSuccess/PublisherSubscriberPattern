@@ -1,9 +1,4 @@
 ﻿namespace PubSub.Domain.ValueObjects
-
 {
-    internal class Subscriber
-    {
-        public required string Key { get; set; }
-        public required TaskCompletionSource<string> Value { get; set; }
-    }
+    internal record Subscriber(string Key, TaskCompletionSource<string> Value);
 }

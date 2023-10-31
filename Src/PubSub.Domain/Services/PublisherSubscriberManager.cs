@@ -64,11 +64,7 @@ namespace PubSub.Domain.Services
         {
             subscriberKey = Guid.NewGuid().ToString();
 
-            var subscriber = new Subscriber()
-            {
-                Key = key,
-                Value = new TaskCompletionSource<string>()
-            };
+            var subscriber = new Subscriber(key, new TaskCompletionSource<string>());
 
             _subscribers.AddOrUpdate(subscriberKey, subscriber);
 
