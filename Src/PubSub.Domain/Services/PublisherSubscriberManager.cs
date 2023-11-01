@@ -71,9 +71,9 @@ namespace PubSub.Domain.Services
             task = subscriber.Value.Task;
         }
 
-        private void Unsubscribe(string key)
+        private void Unsubscribe(string subscriberKey)
         {
-            _subscribers.TryRemove(key, out var subscriber);
+            _subscribers.TryRemove(subscriberKey, out var subscriber);
         }
 
         private void SendToSubscribers(string key, string value)
