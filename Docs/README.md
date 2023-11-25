@@ -2,7 +2,7 @@
 <h2 align="center">Пример реализации поведенческого шаблона «Издатель-подписчик»</h2>
 
 <div align="center">
-  <img src="https://github.com/DeveloperSuccess/PublisherSubscriberPattern/assets/42216524/112fcbc0-c095-4145-93b1-ccc2b4001176" width="75%" alt="Схема поведенческого шаблона (паттерна) «Издатель-подписчик»"/>
+  <img src="https://github.com/DeveloperSuccess/PublisherSubscriberPattern/assets/42216524/8746a184-7e0e-43ea-b6ce-6265beec4634" width="75%" alt="Схема поведенческого шаблона (паттерна) «Издатель-подписчик»"/>
 </div>
 
 <p>Реализация позволяет осуществлять ограниченную по времени асинхронную подписку на получение значений по уникальным ключам, время ожидания задается на усмотрение подписчиков.</p>
