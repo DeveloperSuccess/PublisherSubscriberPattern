@@ -45,7 +45,7 @@ namespace PubSub.Domain.Services
 
                 if (completedTask == task)
                 {
-                    return new WaitForValueResponse(Value: task.Result);
+                    return new WaitForValueResponse(Value: await task);
                 }
                 else if (completedTask == completionSource.Task)
                 {
