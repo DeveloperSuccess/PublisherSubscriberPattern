@@ -43,16 +43,10 @@ namespace PubSub.Domain.Services
 
                 return new WaitForValueResponse(Value: result);
             }
-            catch (TaskCanceledException)
-            {
-                throw;
-            }
             catch (TimeoutException)
             {
                 return new WaitForValueResponse(Success: false, ErrorMessage: "Время ожидания истекло.");
             }
-
-            throw new InvalidOperationException("Код перешел в недопустимое состояние.");
         }
 
         private void Subscribe(string key, out string subscriberKey, out Task<string> task)
