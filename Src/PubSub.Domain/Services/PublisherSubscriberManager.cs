@@ -38,14 +38,16 @@ namespace PubSub.Domain.Services
             try
             {
                 var value = await task.WaitAsync(TimeSpan.FromMilliseconds(millisecondsWait), cancellationToken);
-
-                Unsubscribe(subscriberKey);
-
+                  
                 return new WaitForValueResponse(Value: value);
             }
             catch (TimeoutException)
             {
                 return new WaitForValueResponse(Success: false, ErrorMessage: "Время ожидания истекло.");
+            }
+            finally 
+            {
+                Unsubscribe(subscriberKey);
             }
         }
 
