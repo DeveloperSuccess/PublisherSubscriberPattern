@@ -32,6 +32,7 @@ namespace PubSub.Domain.Services
             if (_storageValues.TryGetValue(key, out var storageValue))
             {
                 Unsubscribe(subscriberKey);
+
                 return new WaitForValueResponse(Value: storageValue.Value);
             }
 
