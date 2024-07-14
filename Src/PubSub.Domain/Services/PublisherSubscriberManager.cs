@@ -37,11 +37,11 @@ namespace PubSub.Domain.Services
 
             try
             {
-                var result = await task.WaitAsync(TimeSpan.FromMilliseconds(millisecondsWait), cancellationToken);
+                var value = await task.WaitAsync(TimeSpan.FromMilliseconds(millisecondsWait), cancellationToken);
 
                 Unsubscribe(subscriberKey);
 
-                return new WaitForValueResponse(Value: result);
+                return new WaitForValueResponse(Value: value);
             }
             catch (TimeoutException)
             {
