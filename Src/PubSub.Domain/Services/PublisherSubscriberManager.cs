@@ -35,26 +35,21 @@ namespace PubSub.Domain.Services
                 return new WaitForValueResponse(Value: storageValue.Value);
             }
 
-            var completionSource = new TaskCompletionSource<bool>();
-
-            await using (cancellationToken.Register(() => completionSource.TrySetCanceled()))
+            try
             {
-                var completedTask = await Task.WhenAny(task, completionSource.Task, Task.Delay(millisecondsWait, cancellationToken));
+                var result = await task.WaitAsync(TimeSpan.FromMilliseconds(millisecondsWait), cancellationToken);
 
                 Unsubscribe(subscriberKey);
 
-                if (completedTask == task)
-                {
-                    return new WaitForValueResponse(Value: await task);
-                }
-                else if (completedTask == completionSource.Task)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                }
-                else
-                {
-                    return new WaitForValueResponse(Success: false, ErrorMessage: "Время ожидания истекло.");
-                }
+                return new WaitForValueResponse(Value: result);
+            }
+            catch (TaskCanceledException)
+            {
+                throw;
+            }
+            catch (TimeoutException)
+            {
+                return new WaitForValueResponse(Success: false, ErrorMessage: "Время ожидания истекло.");
             }
 
             throw new InvalidOperationException("Код перешел в недопустимое состояние.");
